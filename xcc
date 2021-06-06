@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Use clang to generate x86
+clang -o /tmp/xvm-clang.s -masm=intel -S -fno-asynchronous-unwind-tables -fno-exceptions -fno-rtti -fverbose-asm -O0 $1 -Wimplicit-function-declaration
+
+# Use python transpiler
+python transpiler.py /tmp/xvm-clang.s /tmp/xvm-clang.asm
+
+# Use xasm to assemble
+../cmake-build-debug/xasm -i /tmp/xvm-clang.asm ../xlib/* -o $2 $3
