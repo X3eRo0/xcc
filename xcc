@@ -1,10 +1,13 @@
 #!/bin/bash
 
+XVM_PATH=/home/x3ero0/xvm
+XCC_PATH=/home/x3ero0/xcc
+
 # Use clang to generate x86
-clang -o /tmp/xvm-clang.s -masm=intel -S -fno-asynchronous-unwind-tables -fno-exceptions -fno-rtti -fverbose-asm -O0 $1 -Wimplicit-function-declaration
+clang-11 -I$XCC_PATH -w -o /tmp/xvm-clang.s -masm=intel -S -nostdlib -fno-asynchronous-unwind-tables -fno-exceptions -fno-rtti -fverbose-asm -O0 $1 -Wimplicit-function-declaration
 
 # Use python transpiler
-python transpiler.py /tmp/xvm-clang.s /tmp/xvm-clang.asm
+python $XCC_PATH/transpiler.py /tmp/xvm-clang.s /tmp/xvm-clang.asm
 
 # Use xasm to assemble
-../cmake-build-debug/xasm -i /tmp/xvm-clang.asm ../xlib/* -o $2 $3
+$XVM_PATH/build/xasm -i /tmp/xvm-clang.asm $XVM_PATH/xlib/* -o $2 $3

@@ -310,20 +310,22 @@ def transform_instructions(code):
             arg2 = arg1
             arg1 = "$r0"
 
-        if opcode == "lea":
-            arg2r = arg2.replace("[", "").replace("]", "").split(" ")[0]
-            modif = arg2.replace("[", "").replace("]", "").split(" ")[1]
-            arg2i = arg2.replace("[", "").replace("]", "").split(" ")[2]
-
-            if modif == "+":
-                output.append("    %s    %s, %s" % ("mov", arg1, arg2r))
-                output.append("    add    %s, #0x%x" % (arg1, int(arg2i)))
-                continue
-            else:
-                output.append("    %s    %s, %s" % ("mov", arg1, arg2r))
-                output.append("    sub    %s, #0x%x" % (arg1, int(arg2i)))
-                continue
-
+        # if opcode == "lea":
+        #     temp = arg2.replace("[", "").replace("]", "").split(" ")
+        #     if len(temp) == 1:
+        #
+        #     arg2r = arg2.replace("[", "").replace("]", "").split(" ")[0]
+        #     modif = arg2.replace("[", "").replace("]", "").split(" ")[1]
+        #     arg2i = arg2.replace("[", "").replace("]", "").split(" ")[2]
+        #     if modif == "+":
+        #         output.append("    %s    %s, %s" % ("mov", arg1, arg2r))
+        #         output.append("    add    %s, #0x%x" % (arg1, int(arg2i)))
+        #         continue
+        #     else:
+        #         output.append("    %s    %s, %s" % ("mov", arg1, arg2r))
+        #         output.append("    sub    %s, #0x%x" % (arg1, int(arg2i)))
+        #         continue
+        #
 
         if arg1[0] == "[" and ("+" in arg1 or "-" in arg1):
             temp = arg1.replace("[", "").replace("]", "").split()
